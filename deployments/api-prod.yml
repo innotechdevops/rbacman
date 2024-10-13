@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  rbacman-api:
+    image: rbacman-api:1.0
+    ports:
+      - "9001:9001"
+    environment:
+      TZ: "Asia/Bangkok"
+    networks:
+      - rbacman-network
+
+networks:
+  rbacman-network:
+    external: true
