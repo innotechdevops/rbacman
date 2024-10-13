@@ -8,8 +8,17 @@ package api
 
 import (
 	"github.com/innotechdevops/rbacman/internal/pkg/response"
+	"github.com/innotechdevops/rbacman/internal/rbacman/api/group"
+	"github.com/innotechdevops/rbacman/internal/rbacman/api/group_permission"
+	"github.com/innotechdevops/rbacman/internal/rbacman/api/organization"
 	"github.com/innotechdevops/rbacman/internal/rbacman/api/permission"
+	"github.com/innotechdevops/rbacman/internal/rbacman/api/resource"
 	"github.com/innotechdevops/rbacman/internal/rbacman/api/role"
+	"github.com/innotechdevops/rbacman/internal/rbacman/api/user"
+	"github.com/innotechdevops/rbacman/internal/rbacman/api/user_group"
+	"github.com/innotechdevops/rbacman/internal/rbacman/api/user_organization"
+	"github.com/innotechdevops/rbacman/internal/rbacman/api/user_permission"
+	"github.com/innotechdevops/rbacman/internal/rbacman/api/user_role"
 	"github.com/innotechdevops/rbacman/internal/rbacman/database"
 )
 
@@ -33,7 +42,61 @@ func CreateAPI(dbDriver database.Drivers) API {
 	permissionHandler := permission.NewHandler(permissionUseCase, fibererrorResponse)
 	permissionValidate := permission.NewValidate()
 	permissionRouter := permission.NewRouter(permissionHandler, permissionValidate)
-	apiRouters := NewRouters(router, permissionRouter)
+	groupDataSource := group.NewDataSource(dbDriver)
+	groupRepository := group.NewRepository(groupDataSource)
+	groupUseCase := group.NewUseCase(groupRepository)
+	groupHandler := group.NewHandler(groupUseCase, fibererrorResponse)
+	groupValidate := group.NewValidate()
+	groupRouter := group.NewRouter(groupHandler, groupValidate)
+	group_permissionDataSource := group_permission.NewDataSource(dbDriver)
+	group_permissionRepository := group_permission.NewRepository(group_permissionDataSource)
+	group_permissionUseCase := group_permission.NewUseCase(group_permissionRepository)
+	group_permissionHandler := group_permission.NewHandler(group_permissionUseCase, fibererrorResponse)
+	group_permissionValidate := group_permission.NewValidate()
+	group_permissionRouter := group_permission.NewRouter(group_permissionHandler, group_permissionValidate)
+	organizationDataSource := organization.NewDataSource(dbDriver)
+	organizationRepository := organization.NewRepository(organizationDataSource)
+	organizationUseCase := organization.NewUseCase(organizationRepository)
+	organizationHandler := organization.NewHandler(organizationUseCase, fibererrorResponse)
+	organizationValidate := organization.NewValidate()
+	organizationRouter := organization.NewRouter(organizationHandler, organizationValidate)
+	resourceDataSource := resource.NewDataSource(dbDriver)
+	resourceRepository := resource.NewRepository(resourceDataSource)
+	resourceUseCase := resource.NewUseCase(resourceRepository)
+	resourceHandler := resource.NewHandler(resourceUseCase, fibererrorResponse)
+	resourceValidate := resource.NewValidate()
+	resourceRouter := resource.NewRouter(resourceHandler, resourceValidate)
+	userDataSource := user.NewDataSource(dbDriver)
+	userRepository := user.NewRepository(userDataSource)
+	userUseCase := user.NewUseCase(userRepository)
+	userHandler := user.NewHandler(userUseCase, fibererrorResponse)
+	userValidate := user.NewValidate()
+	userRouter := user.NewRouter(userHandler, userValidate)
+	user_groupDataSource := user_group.NewDataSource(dbDriver)
+	user_groupRepository := user_group.NewRepository(user_groupDataSource)
+	user_groupUseCase := user_group.NewUseCase(user_groupRepository)
+	user_groupHandler := user_group.NewHandler(user_groupUseCase, fibererrorResponse)
+	user_groupValidate := user_group.NewValidate()
+	user_groupRouter := user_group.NewRouter(user_groupHandler, user_groupValidate)
+	user_organizationDataSource := user_organization.NewDataSource(dbDriver)
+	user_organizationRepository := user_organization.NewRepository(user_organizationDataSource)
+	user_organizationUseCase := user_organization.NewUseCase(user_organizationRepository)
+	user_organizationHandler := user_organization.NewHandler(user_organizationUseCase, fibererrorResponse)
+	user_organizationValidate := user_organization.NewValidate()
+	user_organizationRouter := user_organization.NewRouter(user_organizationHandler, user_organizationValidate)
+	user_roleDataSource := user_role.NewDataSource(dbDriver)
+	user_roleRepository := user_role.NewRepository(user_roleDataSource)
+	user_roleUseCase := user_role.NewUseCase(user_roleRepository)
+	user_roleHandler := user_role.NewHandler(user_roleUseCase, fibererrorResponse)
+	user_roleValidate := user_role.NewValidate()
+	user_roleRouter := user_role.NewRouter(user_roleHandler, user_roleValidate)
+	user_permissionDataSource := user_permission.NewDataSource(dbDriver)
+	user_permissionRepository := user_permission.NewRepository(user_permissionDataSource)
+	user_permissionUseCase := user_permission.NewUseCase(user_permissionRepository)
+	user_permissionHandler := user_permission.NewHandler(user_permissionUseCase, fibererrorResponse)
+	user_permissionValidate := user_permission.NewValidate()
+	user_permissionRouter := user_permission.NewRouter(user_permissionHandler, user_permissionValidate)
+	apiRouters := NewRouters(router, permissionRouter, groupRouter, group_permissionRouter, organizationRouter, resourceRouter, userRouter, user_groupRouter, user_organizationRouter, user_roleRouter, user_permissionRouter)
 	apiAPI := NewAPI(apiRouters)
 	return apiAPI
 }
