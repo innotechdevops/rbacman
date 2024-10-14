@@ -1,7 +1,7 @@
 package user_permission
 
 type Repository interface {
-	PermissionAllowed(userId string, resourcePermission string) *UserPermission
+	PermissionAllowed(userId string, resourcePermission string) *UserResourcePermission
 	PermissionList(userId string) []UserPermission
 }
 
@@ -9,7 +9,7 @@ type repository struct {
 	Ds DataSource
 }
 
-func (r *repository) PermissionAllowed(userId string, resourcePermission string) *UserPermission {
+func (r *repository) PermissionAllowed(userId string, resourcePermission string) *UserResourcePermission {
 	return r.Ds.PermissionAllowed(userId, resourcePermission)
 }
 

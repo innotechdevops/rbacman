@@ -7,3 +7,7 @@ type UserPermission struct {
 	PermissionValue    string `json:"permissionValue"`
 	ResourcePermission string `json:"resourcePermission"`
 }
+
+type UserResourcePermission struct {
+	Permission string `json:"permission"`
+}
