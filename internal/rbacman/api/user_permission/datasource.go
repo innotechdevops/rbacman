@@ -21,12 +21,12 @@ func (r *dataSource) PermissionAllowed(userId string, resourcePermission string)
 
 	// High level
 	query1 := `SELECT 
-	COUNT(g.id)
-FROM users u 
-INNER JOIN users_groups ug ON ug.user_id = u.id
-INNER JOIN groups g ON g.id = ug.group_id
-INNER JOIN roles r ON r.id = g.parent_id AND r.level = 1
-WHERE u.id = ?`
+		COUNT(g.id)
+	FROM users u 
+	INNER JOIN users_groups ug ON ug.user_id = u.id
+	INNER JOIN groups g ON g.id = ug.group_id
+	INNER JOIN roles r ON r.id = g.parent_id AND r.level = 1
+	WHERE u.id = ?`
 	hlAllowed := pqwrapper.Count(conn, query1, userId) > 0
 	if hlAllowed {
 		return true
