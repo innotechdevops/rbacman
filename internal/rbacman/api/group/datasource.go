@@ -22,7 +22,7 @@ type dataSource struct {
 
 func (d *dataSource) Count(params Params) int64 {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT COUNT(id) FROM group WHERE 1=1 %s"
+	sql := "SELECT COUNT(id) FROM groups WHERE 1=1 %s"
 	wheres := ""
 	args := []any{}
 
@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []Group {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT g.id, g.name, g.parent_id FROM group g WHERE 1=1 %s ORDER BY g.id"
+	sql := "SELECT g.id, g.name, g.parent_id FROM groups g WHERE 1=1 %s ORDER BY g.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,14 +51,14 @@ func (d *dataSource) FindList(params Params) []Group {
 
 func (d *dataSource) FindById(id string) Group {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT g.id, g.name, g.parent_id FROM group g WHERE g.id = ?"
+	sql := "SELECT g.id, g.name, g.parent_id FROM groups g WHERE g.id = ?"
 
 	return mrwrapper.SelectOne[Group](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreateGroup) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO group (name, parent_id) VALUES (?, ?)"
+	sql := "INSERT INTO groups (name, parent_id) VALUES (?, ?)"
 	args := []any{
 		data.Name,
 		data.ParentId,
@@ -79,7 +79,7 @@ func (d *dataSource) Update(data *UpdateGroup) error {
 		"id": data.Id,
 	}
 	set := ""
-	sql := "UPDATE group SET %s WHERE id=:id"
+	sql := "UPDATE groups SET %s WHERE id=:id"
 
 	if data.Name != "" {
 		set += ", name=:name"
@@ -102,7 +102,7 @@ func (d *dataSource) Update(data *UpdateGroup) error {
 
 func (d *dataSource) Delete(id string) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "DELETE FROM group WHERE id=?"
+	sql := "DELETE FROM groups WHERE id=?"
 
 	tx, err := mrwrapper.Delete(conn, sql, id)
 	if err == nil {

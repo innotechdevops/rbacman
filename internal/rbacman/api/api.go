@@ -10,7 +10,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 	"github.com/innotechdevops/rbacman/configuration"
-	"github.com/innotechdevops/rbacman/internal/pkg/casbinx"
 	"os"
 	"os/signal"
 	"syscall"
@@ -38,7 +37,6 @@ func (a *api) Register() {
 		AllowMethods: "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS",
 	}))
 	app.Use("/swagger", swagger.HandlerDefault)
-	app.Use(casbinx.New())
 
 	app.Hooks().OnShutdown(func() error {
 		log.Info("On server shutting down")

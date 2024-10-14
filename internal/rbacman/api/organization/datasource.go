@@ -22,7 +22,7 @@ type dataSource struct {
 
 func (d *dataSource) Count(params Params) int64 {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT COUNT(id) FROM organization WHERE 1=1 %s"
+	sql := "SELECT COUNT(id) FROM organizations WHERE 1=1 %s"
 	wheres := ""
 	args := []any{}
 
@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []Organization {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT o.parent_id, o.id, o.name FROM organization o WHERE 1=1 %s ORDER BY o.id"
+	sql := "SELECT o.parent_id, o.id, o.name FROM organizations o WHERE 1=1 %s ORDER BY o.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,14 +51,14 @@ func (d *dataSource) FindList(params Params) []Organization {
 
 func (d *dataSource) FindById(id int64) Organization {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT o.parent_id, o.id, o.name FROM organization o WHERE o.id = ?"
+	sql := "SELECT o.parent_id, o.id, o.name FROM organizations o WHERE o.id = ?"
 
 	return mrwrapper.SelectOne[Organization](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreateOrganization) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO organization (parent_id, name) VALUES (?, ?)"
+	sql := "INSERT INTO organizations (parent_id, name) VALUES (?, ?)"
 	args := []any{
 		data.ParentId,
 		data.Name,
@@ -79,7 +79,7 @@ func (d *dataSource) Update(data *UpdateOrganization) error {
 		"id": data.Id,
 	}
 	set := ""
-	sql := "UPDATE organization SET %s WHERE id=:id"
+	sql := "UPDATE organizations SET %s WHERE id=:id"
 
 	if data.ParentId > 0 {
 		set += ", parent_id=:parent_id"
@@ -102,7 +102,7 @@ func (d *dataSource) Update(data *UpdateOrganization) error {
 
 func (d *dataSource) Delete(id int64) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "DELETE FROM organization WHERE id=?"
+	sql := "DELETE FROM organizations WHERE id=?"
 
 	tx, err := mrwrapper.Delete(conn, sql, id)
 	if err == nil {

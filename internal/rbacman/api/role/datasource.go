@@ -22,7 +22,7 @@ type dataSource struct {
 
 func (d *dataSource) Count(params Params) int64 {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT COUNT(id) FROM role WHERE 1=1 %s"
+	sql := "SELECT COUNT(id) FROM roles WHERE 1=1 %s"
 	wheres := ""
 	args := []any{}
 
@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []Role {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT r.value, r.id, r.name FROM role r WHERE 1=1 %s ORDER BY r.id"
+	sql := "SELECT r.value, r.id, r.name FROM roles r WHERE 1=1 %s ORDER BY r.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,14 +51,14 @@ func (d *dataSource) FindList(params Params) []Role {
 
 func (d *dataSource) FindById(id int64) Role {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT r.value, r.id, r.name FROM role r WHERE r.id = ?"
+	sql := "SELECT r.value, r.id, r.name FROM roles r WHERE r.id = ?"
 
 	return mrwrapper.SelectOne[Role](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreateRole) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO role (value, name) VALUES (?, ?)"
+	sql := "INSERT INTO roles (value, name) VALUES (?, ?)"
 	args := []any{
 		data.Value,
 		data.Name,
@@ -79,7 +79,7 @@ func (d *dataSource) Update(data *UpdateRole) error {
 		"id": data.Id,
 	}
 	set := ""
-	sql := "UPDATE role SET %s WHERE id=:id"
+	sql := "UPDATE roles SET %s WHERE id=:id"
 
 	if data.Value != "" {
 		set += ", value=:value"
@@ -102,7 +102,7 @@ func (d *dataSource) Update(data *UpdateRole) error {
 
 func (d *dataSource) Delete(id int64) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "DELETE FROM role WHERE id=?"
+	sql := "DELETE FROM roles WHERE id=?"
 
 	tx, err := mrwrapper.Delete(conn, sql, id)
 	if err == nil {

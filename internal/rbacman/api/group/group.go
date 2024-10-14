@@ -7,19 +7,19 @@ import (
 type Group struct {
 	Id       string `json:"id" db:"id"`
 	Name     string `json:"name" db:"name"`
-	ParentId string `json:"parent_id" db:"parent_id"`
+	ParentId string `json:"parentId" db:"parent_id"`
 }
 
 type CreateGroup struct {
 	Id       string `json:"id" db:"id"`
 	Name     string `json:"name" db:"name"`
-	ParentId string `json:"parent_id" db:"parent_id"`
+	ParentId string `json:"parentId" db:"parent_id"`
 }
 
 type UpdateGroup struct {
 	Id       string `json:"id" db:"id"`
 	Name     string `json:"name" db:"name"`
-	ParentId string `json:"parent_id" db:"parent_id"`
+	ParentId string `json:"parentId" db:"parent_id"`
 }
 
 type DeleteGroup struct {

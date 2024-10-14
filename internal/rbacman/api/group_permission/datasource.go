@@ -22,7 +22,7 @@ type dataSource struct {
 
 func (d *dataSource) Count(params Params) int64 {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT COUNT(id) FROM group_permission WHERE 1=1 %s"
+	sql := "SELECT COUNT(id) FROM groups_permissions WHERE 1=1 %s"
 	wheres := ""
 	args := []any{}
 
@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []GroupPermission {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT g.id, g.group_id, g.resource_id, g.permission_id FROM group_permission g WHERE 1=1 %s ORDER BY g.id"
+	sql := "SELECT g.id, g.group_id, g.resource_id, g.permission_id FROM groups_permissions g WHERE 1=1 %s ORDER BY g.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,14 +51,14 @@ func (d *dataSource) FindList(params Params) []GroupPermission {
 
 func (d *dataSource) FindById(id int64) GroupPermission {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT g.id, g.group_id, g.resource_id, g.permission_id FROM group_permission g WHERE g.id = ?"
+	sql := "SELECT g.id, g.group_id, g.resource_id, g.permission_id FROM groups_permissions g WHERE g.id = ?"
 
 	return mrwrapper.SelectOne[GroupPermission](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreateGroupPermission) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO group_permission (group_id, resource_id, permission_id) VALUES (?, ?, ?)"
+	sql := "INSERT INTO groups_permissions (group_id, resource_id, permission_id) VALUES (?, ?, ?)"
 	args := []any{
 		data.GroupId,
 		data.ResourceId,
@@ -80,7 +80,7 @@ func (d *dataSource) Update(data *UpdateGroupPermission) error {
 		"id": data.Id,
 	}
 	set := ""
-	sql := "UPDATE group_permission SET %s WHERE id=:id"
+	sql := "UPDATE groups_permissions SET %s WHERE id=:id"
 
 	if data.GroupId != "" {
 		set += ", group_id=:group_id"
@@ -107,7 +107,7 @@ func (d *dataSource) Update(data *UpdateGroupPermission) error {
 
 func (d *dataSource) Delete(id int64) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "DELETE FROM group_permission WHERE id=?"
+	sql := "DELETE FROM groups_permissions WHERE id=?"
 
 	tx, err := mrwrapper.Delete(conn, sql, id)
 	if err == nil {

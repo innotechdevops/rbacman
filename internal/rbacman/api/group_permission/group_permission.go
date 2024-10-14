@@ -6,23 +6,23 @@ import (
 
 type GroupPermission struct {
 	Id           int64  `json:"id" db:"id"`
-	GroupId      string `json:"group_id" db:"group_id"`
-	ResourceId   int64  `json:"resource_id" db:"resource_id"`
-	PermissionId int64  `json:"permission_id" db:"permission_id"`
+	GroupId      string `json:"groupId" db:"group_id"`
+	ResourceId   int64  `json:"resourceId" db:"resource_id"`
+	PermissionId int64  `json:"permissionId" db:"permission_id"`
 }
 
 type CreateGroupPermission struct {
 	Id           int64  `json:"id" db:"id"`
-	GroupId      string `json:"group_id" db:"group_id"`
-	ResourceId   int64  `json:"resource_id" db:"resource_id"`
-	PermissionId int64  `json:"permission_id" db:"permission_id"`
+	GroupId      string `json:"groupId" db:"group_id"`
+	ResourceId   int64  `json:"resourceId" db:"resource_id"`
+	PermissionId int64  `json:"permissionId" db:"permission_id"`
 }
 
 type UpdateGroupPermission struct {
 	Id           int64  `json:"id" db:"id"`
-	GroupId      string `json:"group_id" db:"group_id"`
-	ResourceId   int64  `json:"resource_id" db:"resource_id"`
-	PermissionId int64  `json:"permission_id" db:"permission_id"`
+	GroupId      string `json:"groupId" db:"group_id"`
+	ResourceId   int64  `json:"resourceId" db:"resource_id"`
+	PermissionId int64  `json:"permissionId" db:"permission_id"`
 }
 
 type DeleteGroupPermission struct {

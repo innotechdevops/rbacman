@@ -22,7 +22,7 @@ type dataSource struct {
 
 func (d *dataSource) Count(params Params) int64 {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT COUNT(id) FROM permission WHERE 1=1 %s"
+	sql := "SELECT COUNT(id) FROM permissions WHERE 1=1 %s"
 	wheres := ""
 	args := []any{}
 
@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []Permission {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT p.id, p.name, p.value FROM permission p WHERE 1=1 %s ORDER BY p.id"
+	sql := "SELECT p.id, p.name, p.value FROM permissions p WHERE 1=1 %s ORDER BY p.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,14 +51,14 @@ func (d *dataSource) FindList(params Params) []Permission {
 
 func (d *dataSource) FindById(id int64) Permission {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT p.id, p.name, p.value FROM permission p WHERE p.id = ?"
+	sql := "SELECT p.id, p.name, p.value FROM permissions p WHERE p.id = ?"
 
 	return mrwrapper.SelectOne[Permission](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreatePermission) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO permission (name, value) VALUES (?, ?)"
+	sql := "INSERT INTO permissions (name, value) VALUES (?, ?)"
 	args := []any{
 		data.Name,
 		data.Value,
@@ -79,7 +79,7 @@ func (d *dataSource) Update(data *UpdatePermission) error {
 		"id": data.Id,
 	}
 	set := ""
-	sql := "UPDATE permission SET %s WHERE id=:id"
+	sql := "UPDATE permissions SET %s WHERE id=:id"
 
 	if data.Name != "" {
 		set += ", name=:name"
@@ -102,7 +102,7 @@ func (d *dataSource) Update(data *UpdatePermission) error {
 
 func (d *dataSource) Delete(id int64) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "DELETE FROM permission WHERE id=?"
+	sql := "DELETE FROM permissions WHERE id=?"
 
 	tx, err := mrwrapper.Delete(conn, sql, id)
 	if err == nil {

@@ -22,7 +22,7 @@ type dataSource struct {
 
 func (d *dataSource) Count(params Params) int64 {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT COUNT(id) FROM user_organization WHERE 1=1 %s"
+	sql := "SELECT COUNT(id) FROM users_organizations WHERE 1=1 %s"
 	wheres := ""
 	args := []any{}
 
@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []UserOrganization {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT u.user_id, u.organization_id, u.id FROM user_organization u WHERE 1=1 %s ORDER BY u.id"
+	sql := "SELECT u.user_id, u.organization_id, u.id FROM users_organizations u WHERE 1=1 %s ORDER BY u.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,14 +51,14 @@ func (d *dataSource) FindList(params Params) []UserOrganization {
 
 func (d *dataSource) FindById(id int64) UserOrganization {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT u.user_id, u.organization_id, u.id FROM user_organization u WHERE u.id = ?"
+	sql := "SELECT u.user_id, u.organization_id, u.id FROM users_organizations u WHERE u.id = ?"
 
 	return mrwrapper.SelectOne[UserOrganization](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreateUserOrganization) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO user_organization (user_id, organization_id) VALUES (?, ?)"
+	sql := "INSERT INTO users_organizations (user_id, organization_id) VALUES (?, ?)"
 	args := []any{
 		data.UserId,
 		data.OrganizationId,
@@ -79,7 +79,7 @@ func (d *dataSource) Update(data *UpdateUserOrganization) error {
 		"id": data.Id,
 	}
 	set := ""
-	sql := "UPDATE user_organization SET %s WHERE id=:id"
+	sql := "UPDATE users_organizations SET %s WHERE id=:id"
 
 	if data.UserId != "" {
 		set += ", user_id=:user_id"
@@ -102,7 +102,7 @@ func (d *dataSource) Update(data *UpdateUserOrganization) error {
 
 func (d *dataSource) Delete(id int64) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "DELETE FROM user_organization WHERE id=?"
+	sql := "DELETE FROM users_organizations WHERE id=?"
 
 	tx, err := mrwrapper.Delete(conn, sql, id)
 	if err == nil {

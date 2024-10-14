@@ -22,7 +22,7 @@ type dataSource struct {
 
 func (d *dataSource) Count(params Params) int64 {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT COUNT(id) FROM user WHERE 1=1 %s"
+	sql := "SELECT COUNT(id) FROM users WHERE 1=1 %s"
 	wheres := ""
 	args := []any{}
 
@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []User {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT u.password, u.id, u.first_name, u.last_name, u.username, u.email FROM user u WHERE 1=1 %s ORDER BY u.id"
+	sql := "SELECT u.password, u.id, u.first_name, u.last_name, u.username, u.email FROM users u WHERE 1=1 %s ORDER BY u.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,14 +51,14 @@ func (d *dataSource) FindList(params Params) []User {
 
 func (d *dataSource) FindById(id string) User {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT u.password, u.id, u.first_name, u.last_name, u.username, u.email FROM user u WHERE u.id = ?"
+	sql := "SELECT u.password, u.id, u.first_name, u.last_name, u.username, u.email FROM users u WHERE u.id = ?"
 
 	return mrwrapper.SelectOne[User](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreateUser) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO user (password, first_name, last_name, username, email) VALUES (?, ?, ?, ?, ?)"
+	sql := "INSERT INTO users (password, first_name, last_name, username, email) VALUES (?, ?, ?, ?, ?)"
 	args := []any{
 		data.Password,
 		data.FirstName,
@@ -82,7 +82,7 @@ func (d *dataSource) Update(data *UpdateUser) error {
 		"id": data.Id,
 	}
 	set := ""
-	sql := "UPDATE user SET %s WHERE id=:id"
+	sql := "UPDATE users SET %s WHERE id=:id"
 
 	if data.Password != "" {
 		set += ", password=:password"
@@ -117,7 +117,7 @@ func (d *dataSource) Update(data *UpdateUser) error {
 
 func (d *dataSource) Delete(id string) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "DELETE FROM user WHERE id=?"
+	sql := "DELETE FROM users WHERE id=?"
 
 	tx, err := mrwrapper.Delete(conn, sql, id)
 	if err == nil {

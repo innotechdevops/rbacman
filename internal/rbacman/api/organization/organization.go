@@ -5,7 +5,7 @@ import (
 )
 
 type Organization struct {
-	ParentId int64  `json:"parent_id" db:"parent_id"`
+	ParentId int64  `json:"parentId" db:"parent_id"`
 	Id       int64  `json:"id" db:"id"`
 	Name     string `json:"name" db:"name"`
 }
@@ -17,7 +17,7 @@ type CreateOrganization struct {
 }
 
 type UpdateOrganization struct {
-	ParentId int64  `json:"parent_id" db:"parent_id"`
+	ParentId int64  `json:"parentId" db:"parent_id"`
 	Id       int64  `json:"id" db:"id"`
 	Name     string `json:"name" db:"name"`
 }

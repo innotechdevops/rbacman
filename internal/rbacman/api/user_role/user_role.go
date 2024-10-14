@@ -6,20 +6,20 @@ import (
 
 type UserRole struct {
 	Id     int64  `json:"id" db:"id"`
-	UserId string `json:"user_id" db:"user_id"`
-	RoleId string `json:"role_id" db:"role_id"`
+	UserId string `json:"userId" db:"user_id"`
+	RoleId string `json:"roleId" db:"role_id"`
 }
 
 type CreateUserRole struct {
 	Id     int64  `json:"id" db:"id"`
-	UserId string `json:"user_id" db:"user_id"`
-	RoleId string `json:"role_id" db:"role_id"`
+	UserId string `json:"userId" db:"user_id"`
+	RoleId string `json:"roleId" db:"role_id"`
 }
 
 type UpdateUserRole struct {
 	Id     int64  `json:"id" db:"id"`
-	UserId string `json:"user_id" db:"user_id"`
-	RoleId string `json:"role_id" db:"role_id"`
+	UserId string `json:"userId" db:"user_id"`
+	RoleId string `json:"roleId" db:"role_id"`
 }
 
 type DeleteUserRole struct {

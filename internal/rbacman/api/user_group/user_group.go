@@ -6,20 +6,20 @@ import (
 
 type UserGroup struct {
 	Id      int64  `json:"id" db:"id"`
-	UserId  string `json:"user_id" db:"user_id"`
-	GroupId string `json:"group_id" db:"group_id"`
+	UserId  string `json:"userId" db:"user_id"`
+	GroupId string `json:"groupId" db:"group_id"`
 }
 
 type CreateUserGroup struct {
 	Id      int64  `json:"id" db:"id"`
-	UserId  string `json:"user_id" db:"user_id"`
-	GroupId string `json:"group_id" db:"group_id"`
+	UserId  string `json:"userId" db:"user_id"`
+	GroupId string `json:"groupId" db:"group_id"`
 }
 
 type UpdateUserGroup struct {
 	Id      int64  `json:"id" db:"id"`
-	UserId  string `json:"user_id" db:"user_id"`
-	GroupId string `json:"group_id" db:"group_id"`
+	UserId  string `json:"userId" db:"user_id"`
+	GroupId string `json:"groupId" db:"group_id"`
 }
 
 type DeleteUserGroup struct {

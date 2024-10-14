@@ -5,20 +5,20 @@ import (
 )
 
 type UserOrganization struct {
-	UserId         string `json:"user_id" db:"user_id"`
-	OrganizationId int64  `json:"organization_id" db:"organization_id"`
+	UserId         string `json:"userId" db:"user_id"`
+	OrganizationId int64  `json:"organizationId" db:"organization_id"`
 	Id             int64  `json:"id" db:"id"`
 }
 
 type CreateUserOrganization struct {
-	UserId         string `json:"user_id" db:"user_id"`
-	OrganizationId int64  `json:"organization_id" db:"organization_id"`
+	UserId         string `json:"userId" db:"user_id"`
+	OrganizationId int64  `json:"organizationId" db:"organization_id"`
 	Id             int64  `json:"id" db:"id"`
 }
 
 type UpdateUserOrganization struct {
-	UserId         string `json:"user_id" db:"user_id"`
-	OrganizationId int64  `json:"organization_id" db:"organization_id"`
+	UserId         string `json:"userId" db:"user_id"`
+	OrganizationId int64  `json:"organizationId" db:"organization_id"`
 	Id             int64  `json:"id" db:"id"`
 }
 
