@@ -7,7 +7,7 @@ import (
 )
 
 type DataSource interface {
-	PermissionAllowed(userId string, resourcePermission string) *UserResourcePermission
+	PermissionAllowed(userId string, resourcePermission string) bool
 	PermissionList(userId string) []UserPermission
 }
 
@@ -16,21 +16,35 @@ type dataSource struct {
 }
 
 // PermissionAllowed implements DataSource.
-func (r *dataSource) PermissionAllowed(userId string, resourcePermission string) *UserResourcePermission {
+func (r *dataSource) PermissionAllowed(userId string, resourcePermission string) bool {
 	conn := r.Driver.GetMariaDB()
-	query := `SELECT 
-		CONCAT(r.value, ':', p.value) AS permission
+
+	// High level
+	query1 := `SELECT 
+	COUNT(g.id)
+FROM users u 
+INNER JOIN users_groups ug ON ug.user_id = u.id
+INNER JOIN groups g ON g.id = ug.group_id
+INNER JOIN roles r ON r.id = g.parent_id
+WHERE u.id = ?`
+	hlAllowed := pqwrapper.Count(conn, query1, userId) > 0
+	if hlAllowed {
+		return true
+	}
+
+	// User level
+	query2 := `SELECT 
+		COUNT(p.id)
 	FROM users u 
-	INNER JOIN users_groups ug ON ug.users_id = u.id
-	INNER JOIN groups g ON g.id = ug.groups_id
-	INNER JOIN groups_permissions gp ON gp.groups_id = ug.groups_id
-	INNER JOIN permissions p ON p.id = gp.permissions_id
-	INNER JOIN resources r ON r.id = gp.resources_id
+	INNER JOIN users_groups ug ON ug.user_id = u.id
+	INNER JOIN groups g ON g.id = ug.group_id
+	INNER JOIN groups_permissions gp ON gp.group_id = ug.group_id
+	INNER JOIN permissions p ON p.id = gp.permission_id
+	INNER JOIN resources r ON r.id = gp.resource_id
 	WHERE u.id = ? AND UPPER(CONCAT(r.value, ':', p.value)) = ?`
+	userAllowed := pqwrapper.Count(conn, query2, userId, strings.ToUpper(resourcePermission)) > 0
 
-	args := []any{userId, strings.ToUpper(resourcePermission)}
-
-	return pqwrapper.SelectOne[*UserResourcePermission](conn, query, args...)
+	return userAllowed
 }
 
 // PermissionList implements DataSource.
@@ -44,11 +58,11 @@ func (r *dataSource) PermissionList(userId string) []UserPermission {
 		p.value AS permission_value,
 		CONCAT(r.value, ':', p.value) AS resource_permission
 	FROM users u 
-	INNER JOIN users_groups ug ON ug.users_id = u.id
-	INNER JOIN groups g ON g.id = ug.groups_id
-	INNER JOIN groups_permissions gp ON gp.groups_id = ug.groups_id
-	INNER JOIN permissions p ON p.id = gp.permissions_id
-	INNER JOIN resources r ON r.id = gp.resources_id
+	INNER JOIN users_groups ug ON ug.user_id = u.id
+	INNER JOIN groups g ON g.id = ug.group_id
+	INNER JOIN groups_permissions gp ON gp.group_id = ug.group_id
+	INNER JOIN permissions p ON p.id = gp.permission_id
+	INNER JOIN resources r ON r.id = gp.resource_id
 	WHERE u.id = ?`
 
 	args := []any{userId}
