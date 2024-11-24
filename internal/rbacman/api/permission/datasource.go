@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []Permission {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT p.id, p.name, p.value FROM permissions p WHERE 1=1 %s ORDER BY p.id"
+	sql := "SELECT p.id, p.name, p.code FROM permissions p WHERE 1=1 %s ORDER BY p.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,17 +51,17 @@ func (d *dataSource) FindList(params Params) []Permission {
 
 func (d *dataSource) FindById(id int64) Permission {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT p.id, p.name, p.value FROM permissions p WHERE p.id = ?"
+	sql := "SELECT p.id, p.name, p.code FROM permissions p WHERE p.id = ?"
 
 	return mrwrapper.SelectOne[Permission](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreatePermission) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO permissions (name, value) VALUES (?, ?)"
+	sql := "INSERT INTO permissions (name, code) codeS (?, ?)"
 	args := []any{
 		data.Name,
-		data.Value,
+		data.Code,
 	}
 	tx, err := mrwrapper.Create(conn, sql, []any{&data.Id}, args...)
 	if err == nil {
@@ -85,9 +85,9 @@ func (d *dataSource) Update(data *UpdatePermission) error {
 		set += ", name=:name"
 		params["name"] = data.Name
 	}
-	if data.Value != "" {
-		set += ", value=:value"
-		params["value"] = data.Value
+	if data.Code != "" {
+		set += ", code=:code"
+		params["code"] = data.Code
 	}
 
 	tx, err := mrwrapper.Update(conn, sql, set, params)

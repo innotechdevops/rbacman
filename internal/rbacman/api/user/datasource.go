@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []User {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT u.password, u.id, u.first_name, u.last_name, u.username, u.email FROM users u WHERE 1=1 %s ORDER BY u.id"
+	sql := "SELECT u.password, u.id, u.first_name, u.last_name, u.username, u.email, u.avatar, u.active FROM users u WHERE 1=1 %s ORDER BY u.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,20 +51,21 @@ func (d *dataSource) FindList(params Params) []User {
 
 func (d *dataSource) FindById(id string) User {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT u.password, u.id, u.first_name, u.last_name, u.username, u.email FROM users u WHERE u.id = ?"
+	sql := "SELECT u.password, u.id, u.first_name, u.last_name, u.username, u.email, u.avatar, u.active FROM users u WHERE u.id = ?"
 
 	return mrwrapper.SelectOne[User](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreateUser) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO users (password, first_name, last_name, username, email) VALUES (?, ?, ?, ?, ?)"
+	sql := "INSERT INTO users (password, first_name, last_name, username, email, avatar) VALUES (?, ?, ?, ?, ?)"
 	args := []any{
 		data.Password,
 		data.FirstName,
 		data.LastName,
 		data.Username,
 		data.Email,
+		data.Avatar,
 	}
 	tx, err := mrwrapper.Create(conn, sql, []any{&data.Id}, args...)
 	if err == nil {
@@ -103,6 +104,18 @@ func (d *dataSource) Update(data *UpdateUser) error {
 	if data.Email != "" {
 		set += ", email=:email"
 		params["email"] = data.Email
+	}
+	if data.Avatar != "" {
+		set += ", avatar=:avatar"
+		params["avatar"] = data.Avatar
+	}
+	if data.Active >= 1 && data.Active <= 2 {
+		set += ", active=:active"
+		params["active"] = data.Active
+	}
+	if data.Flag >= 1 {
+		set += ", flag=:flag"
+		params["flag"] = data.Flag
 	}
 
 	tx, err := mrwrapper.Update(conn, sql, set, params)

@@ -33,7 +33,7 @@ func (d *dataSource) Count(params Params) int64 {
 
 func (d *dataSource) FindList(params Params) []Resource {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT r.value, r.id, r.name FROM resources r WHERE 1=1 %s ORDER BY r.id"
+	sql := "SELECT r.code, r.id, r.name FROM resources r WHERE 1=1 %s ORDER BY r.id"
 	wheres := ""
 	args := []any{}
 
@@ -51,16 +51,16 @@ func (d *dataSource) FindList(params Params) []Resource {
 
 func (d *dataSource) FindById(id int64) Resource {
 	conn := d.Driver.GetMariaDB()
-	sql := "SELECT r.value, r.id, r.name FROM resources r WHERE r.id = ?"
+	sql := "SELECT r.code, r.id, r.name FROM resources r WHERE r.id = ?"
 
 	return mrwrapper.SelectOne[Resource](conn, sql, id)
 }
 
 func (d *dataSource) Create(data *CreateResource) error {
 	conn := d.Driver.GetMariaDB()
-	sql := "INSERT INTO resources (value, name) VALUES (?, ?)"
+	sql := "INSERT INTO resources (code, name) codeS (?, ?)"
 	args := []any{
-		data.Value,
+		data.Code,
 		data.Name,
 	}
 	tx, err := mrwrapper.Create(conn, sql, []any{&data.Id}, args...)
@@ -81,9 +81,9 @@ func (d *dataSource) Update(data *UpdateResource) error {
 	set := ""
 	sql := "UPDATE resources SET %s WHERE id=:id"
 
-	if data.Value != "" {
-		set += ", value=:value"
-		params["value"] = data.Value
+	if data.Code != "" {
+		set += ", code=:code"
+		params["code"] = data.Code
 	}
 	if data.Name != "" {
 		set += ", name=:name"

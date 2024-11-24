@@ -41,7 +41,7 @@ func (r *dataSource) PermissionAllowed(userId string, resourcePermission string)
 	INNER JOIN groups_permissions gp ON gp.group_id = ug.group_id
 	INNER JOIN permissions p ON p.id = gp.permission_id
 	INNER JOIN resources r ON r.id = gp.resource_id
-	WHERE u.id = ? AND UPPER(CONCAT(r.value, ':', p.value)) = ?`
+	WHERE u.id = ? AND UPPER(CONCAT(r.code, ':', p.code)) = ?`
 	userAllowed := pqwrapper.Count(conn, query2, userId, strings.ToUpper(resourcePermission)) > 0
 
 	return userAllowed
@@ -53,10 +53,10 @@ func (r *dataSource) PermissionList(userId string) []UserPermission {
 	query := `SELECT 
 		g.name AS group_name,
 		r.name AS resource_name,
-		r.value AS resource_value,
+		r.code AS resource_code,
 		p.name AS permission_name,
-		p.value AS permission_value,
-		CONCAT(r.value, ':', p.value) AS resource_permission
+		p.code AS permission_code,
+		CONCAT(r.code, ':', p.code) AS resource_permission
 	FROM users u 
 	INNER JOIN users_groups ug ON ug.user_id = u.id
 	INNER JOIN groups g ON g.id = ug.group_id

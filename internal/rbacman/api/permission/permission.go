@@ -5,21 +5,21 @@ import (
 )
 
 type Permission struct {
-	Id    int64  `json:"id" db:"id"`
-	Name  string `json:"name" db:"name"`
-	Value string `json:"value" db:"value"`
+	Id   int64  `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+	Code string `json:"code" db:"code"`
 }
 
 type CreatePermission struct {
-	Id    int64  `json:"id" db:"id"`
-	Name  string `json:"name" db:"name"`
-	Value string `json:"value" db:"value"`
+	Id   int64  `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+	Code string `json:"code" db:"code"`
 }
 
 type UpdatePermission struct {
-	Id    int64  `json:"id" db:"id"`
-	Name  string `json:"name" db:"name"`
-	Value string `json:"value" db:"value"`
+	Id   int64  `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+	Code string `json:"code" db:"code"`
 }
 
 type DeletePermission struct {

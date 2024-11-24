@@ -5,21 +5,21 @@ import (
 )
 
 type Resource struct {
-	Value string `json:"value" db:"value"`
-	Id    int64  `json:"id" db:"id"`
-	Name  string `json:"name" db:"name"`
+	Id   int64  `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+	Code string `json:"code" db:"code"`
 }
 
 type CreateResource struct {
-	Value string `json:"value" db:"value"`
-	Id    int64  `json:"id" db:"id"`
-	Name  string `json:"name" db:"name"`
+	Id   int64  `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+	Code string `json:"code" db:"code"`
 }
 
 type UpdateResource struct {
-	Value string `json:"value" db:"value"`
-	Id    int64  `json:"id" db:"id"`
-	Name  string `json:"name" db:"name"`
+	Id   int64  `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+	Code string `json:"code" db:"code"`
 }
 
 type DeleteResource struct {
